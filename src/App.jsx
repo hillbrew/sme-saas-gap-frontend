@@ -1,10 +1,17 @@
 import { Routes, Route } from "react-router-dom";
-import { LoginPage} from "./pages/authentication/Login"
+
+import Layout from "./layout/Layout";
+
+// Auth
+import { LoginPage } from "./pages/authentication/Login";
 import { TwoFactorPage } from "./pages/authentication/TwoFactor";
 import { Enable2FA } from "./pages/authentication/Enable2FA";
-import Dashboard from "./pages/dashboard/Dashboard"
-import ProtectedRoute from "./components/routes/ProtectedRoute";
 
+import Dashboard from "./pages/dashboard/Dashboard";
+import { CustomersListPage } from "./pages/customer/CustomersListPage";
+import CustomerDetailPage from "./pages/customer/CompanyDetailsPage";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
+import CompanyUsersPage from "./pages/customer/CompanyUsersPage";
 
 export default function App() {
   return (
@@ -13,22 +20,23 @@ export default function App() {
       <Route path="/admin/2fa" element={<TwoFactorPage />} />
 
       <Route
-        path="/admin/dashboard"
+        path="/admin"
         element={
           <ProtectedRoute>
-            <Dashboard />
+            <Layout />
           </ProtectedRoute>
         }
-      />
-
-      <Route
-        path="/admin/settings/2fa"
-        element={
-          <ProtectedRoute>
-            <Enable2FA />
-          </ProtectedRoute>
-        }
-      />
+      >
+        <Route path="dashboard" element={<Dashboard/>} />
+        <Route path="customer-list" element={<CustomersListPage/>} />
+          {/* <Route  element={<CustomerDetailPage />} */}
+          <Route   path="/admin/customer-detail/:customerId"  element={<CustomerDetailPage></CustomerDetailPage>}/>
+          <Route
+    path="/admin/company/:companyId/users"
+    element={<CompanyUsersPage></CompanyUsersPage>}
+  />
+        <Route path="settings/2fa" element={<Enable2FA/>} />
+      </Route>
     </Routes>
   );
 }
