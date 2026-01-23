@@ -1,8 +1,14 @@
 import { ChevronDown, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Navbar = ({ onNavigate }) => {
+const Navbar = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const navigate = useNavigate();
+
+  const onNavigate = (path) => {
+    navigate(path);
+  };
 
   return (
     <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8">
@@ -41,8 +47,10 @@ const Navbar = ({ onNavigate }) => {
 
             <button
               onClick={() => {
+                localStorage.clear();
+                sessionStorage.clear();
                 setShowProfileMenu(false);
-                onNavigate("login");
+                onNavigate("/admin/login");
               }}
               className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >

@@ -45,3 +45,41 @@ export const fetchCompanyUsers = createAsyncThunk(
 );
 
 
+export const deactivateCompany = createAsyncThunk(
+  "adminCompany/deactivate",
+  async (companyId, { rejectWithValue }) => {
+    try {
+      const res = await api.patch(
+        `/api/admin/companies/${companyId}/deactivate`
+      );
+      return {
+        companyId,
+        ...res.data,
+      };
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to deactivate company"
+      );
+    }
+  }
+);
+
+
+export const activateCompany = createAsyncThunk(
+  "adminCompany/activate",
+  async (companyId, { rejectWithValue }) => {
+    try {
+      const res = await api.patch(
+        `/api/admin/companies/${companyId}/activate`
+      );
+      return {
+        companyId,
+        ...res.data,
+      };
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to activate company"
+      );
+    }
+  }
+);

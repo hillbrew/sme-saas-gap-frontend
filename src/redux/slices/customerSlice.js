@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchCustomers, fetchUserCompanies, fetchCompanyUsers } from "../thunk/Thunk";
+import { activateCompany, deactivateCompany,} from "../thunk/Thunk";
 
 const initialState = {
   customers: [],
@@ -9,6 +10,7 @@ const initialState = {
   // Loading & error states
   customersLoading: false,
   customersError: null,
+  companiesForCustomerId: null,
   companiesLoading: false,
   companiesError: null,
   companyUsersLoading: false,
@@ -43,6 +45,7 @@ const customerSlice = createSlice({
       .addCase(fetchUserCompanies.fulfilled, (state, action) => {
         state.companiesLoading = false;
         state.companies = action.payload;
+        state.companiesForCustomerId = action.payload.customerId;
       })
       .addCase(fetchUserCompanies.rejected, (state, action) => {
         state.companiesLoading = false;
@@ -61,6 +64,31 @@ const customerSlice = createSlice({
       .addCase(fetchCompanyUsers.rejected, (state, action) => {
         state.companyUsersLoading = false;
         state.companyUsersError = action.payload;
+      })
+      /* ================= DEACTIVATE COMPANY ================= */
+      .addCase(deactivateCompany.fulfilled, (state, action) => {
+        const { companyId } = action.payload;
+
+        const company = state.companies.find(
+          (c) => c.id === companyId
+        );
+
+        if (company) {
+          company.is_active = false;
+        }
+      })
+
+      /* ================= ACTIVATE COMPANY ================= */
+      .addCase(activateCompany.fulfilled, (state, action) => {
+        const { companyId } = action.payload;
+
+        const company = state.companies.find(
+          (c) => c.id === companyId
+        );
+
+        if (company) {
+          company.is_active = true;
+        }
       });
   },
 });

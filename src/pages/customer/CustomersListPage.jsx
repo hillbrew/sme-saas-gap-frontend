@@ -11,15 +11,16 @@ export function CustomersListPage() {
 
   // ✅ Always array
   const customers = useSelector((state) => state.customers.customers || []);
-  const loading = useSelector((state) => state.customers.loading);
-  const error = useSelector((state) => state.customers.error);
+  const loading = useSelector((state) => state.customers.customersLoading);
+  const error = useSelector((state) => state.customers.customersError);
+  console.log("customers", customers);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  useEffect(() => {
-    dispatch(fetchCustomers());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchCustomers());
+  // }, [dispatch]);
 
   // ✅ Filter using real API fields
   const filteredCustomers = customers.filter((customer) => {

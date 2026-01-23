@@ -14,18 +14,18 @@ export function LoginPage({ onLogin }) {
     const res = await adminLogin({ email, password });
 
     //  2FA REQUIRED
-    // if (res.data.twoFactorRequired) {
-    //   localStorage.setItem("tempToken", res.data.tempToken);
-    //   navigate("/admin/2fa");
-    //   return;
-    // }
+    if (res.data.twoFactorRequired) {
+      localStorage.setItem("tempToken", res.data.tempToken);
+      navigate("/admin/2fa");
+      return;
+    }
 
       //  CASE 2: LOGIN OK BUT 2FA NOT ENABLED → FORCE SETUP
-    // if (res.data.admin && res.data.admin.two_factor_enabled === false) {
-    //     localStorage.setItem("token", res.data.token);
-    //     navigate("/admin/settings/2fa");
-    //     return;
-    // }
+    if (res.data.admin && res.data.admin.two_factor_enabled === false) {
+        localStorage.setItem("token", res.data.token);
+        navigate("/admin/settings/2fa");
+        return;
+    }
 
     //  NO 2FA
     localStorage.setItem("token", res.data.token);

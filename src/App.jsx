@@ -12,12 +12,14 @@ import { CustomersListPage } from "./pages/customer/CustomersListPage";
 import CustomerDetailPage from "./pages/customer/CompanyDetailsPage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import CompanyUsersPage from "./pages/customer/CompanyUsersPage";
+import CompanyInfoPage from "./pages/customer/CompanyInfoPage";
 
 export default function App() {
   return (
     <Routes>
       <Route path="/admin/login" element={<LoginPage />} />
       <Route path="/admin/2fa" element={<TwoFactorPage />} />
+      <Route path="settings/2fa" element={<Enable2FA />} />
 
       <Route
         path="/admin"
@@ -27,16 +29,16 @@ export default function App() {
           </ProtectedRoute>
         }
       >
-        <Route path="dashboard" element={<Dashboard/>} />
-        <Route path="customer-list" element={<CustomersListPage/>} />
-          {/* <Route  element={<CustomerDetailPage />} */}
-          <Route   path="/admin/customer-detail/:customerId"  element={<CustomerDetailPage></CustomerDetailPage>}/>
-          <Route
-    path="/admin/company/:companyId/users"
-    element={<CompanyUsersPage></CompanyUsersPage>}
-  />
-        <Route path="settings/2fa" element={<Enable2FA/>} />
-      </Route>
+        <Route path="/admin/company/:companyId" element={<CompanyInfoPage />}/>
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="customer-list" element={<CustomersListPage />} />
+        {/* <Route  element={<CustomerDetailPage />} */}
+        <Route path="/admin/customer-detail/:customerId" element={<CustomerDetailPage></CustomerDetailPage>} />
+        <Route
+          path="/admin/company/:companyId/users"
+          element={<CompanyUsersPage></CompanyUsersPage>}
+          />
+          </Route>
     </Routes>
   );
 }
