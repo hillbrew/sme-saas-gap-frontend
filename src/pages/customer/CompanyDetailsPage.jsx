@@ -10,7 +10,7 @@
   import { useState, useEffect } from "react";
   import { useNavigate, useParams } from "react-router-dom";
   import { useDispatch, useSelector } from "react-redux";
-  import { fetchUserCompanies } from "../../redux/thunk/Thunk";
+  import { fetchUserCompanies,deleteCompany } from "../../redux/thunk/Thunk";
   import CustomerOverview from "../../components/customer/CustomerOverview";
   import {
     activateCompany,
@@ -20,6 +20,7 @@
   import CompanyActionsMenu from "../../components/customer/CompanyActionsMenu";
 
 
+
   const CustomerDetailPage = () => {
     const { customerId } = useParams();
     const navigate = useNavigate();
@@ -27,6 +28,8 @@
 
     const [activeTab, setActiveTab] = useState("companies");
     const [openActionCompanyId, setOpenActionCompanyId] = useState(null);
+    const [deleteCompanyId, setDeleteCompanyId] = useState(null);
+
 
 
     const companies = useSelector((state) => state.customers.companies);
@@ -65,6 +68,11 @@
     const closeActions = () => {
       dispatch(clearCompanyActionState());
       setOpenActionCompanyId(null);
+    };
+
+    const handleDeleteCompany = (companyId) => {
+      dispatch(deleteCompany(companyId));
+      dispatch(fetchUserCompanies(customerId)); 
     };
 
 
@@ -226,6 +234,7 @@
                                   company={company}
                                   onDeactivate={handleDeactivate}
                                   onActivate={handleActivate}
+                                  onDelete={handleDeleteCompany}
                                   actionLoading={actionLoading}
                                   lastActionCompanyId={lastActionCompanyId}
                                   onClose={closeActions}
@@ -254,6 +263,35 @@
             )}
           </div>
         </div>
+
+        {deleteCompanyId && (
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+    <div className="bg-white rounded-xl p-6 w-full max-w-md">
+      <h2 className="text-lg font-semibold mb-2">Delete Company</h2>
+      <p className="text-sm text-gray-600 mb-6">
+        Are you sure you want to delete this company?
+      </p>
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={handleCancelDelete}
+          className="px-4 py-2 border rounded-lg text-sm"
+        >
+          No
+        </button>
+
+        <button
+          onClick={handleConfirmDelete}
+          disabled={actionLoading}
+          className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm"
+        >
+          Yes
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
       </div>
     );
   };

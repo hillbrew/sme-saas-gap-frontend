@@ -1,6 +1,7 @@
-import { Eye, Loader2, Power, RotateCcw } from "lucide-react";
+import { Eye, Loader2, Trash2, Power, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import CompanyDetailsPopup from "./CompanyDetailsPopup";
+import ConfirmDeletePopup from "./ConfirmDeletePopup";
 
 const CompanyActionsMenu = ({
   company,
@@ -9,10 +10,12 @@ const CompanyActionsMenu = ({
   actionLoading,
   lastActionCompanyId,
   onClose,
+  onDelete,
 }) => {
   const isProcessing =
     actionLoading && lastActionCompanyId === company.id;
     const [showDetails, setShowDetails] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
 
   return (
@@ -64,12 +67,40 @@ const CompanyActionsMenu = ({
         </button>
       )}
 
+<button
+        disabled={isProcessing}
+        onClick={() => setShowDeleteConfirm(true)} 
+        className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
+      >
+        {isProcessing ? (
+          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+        ) : (
+          <Trash2 className="w-4 h-4 mr-2" />
+        )}
+        Delete Company
+      </button>
+
+     
+
       <button
         onClick={onClose}
         className="w-full px-4 py-2 text-xs text-gray-500 text-left hover:bg-gray-50 border-t"
       >
         Close
       </button>
+      {showDeleteConfirm && (
+        <ConfirmDeletePopup
+          title="Delete Company"
+          message={`Are you sure you want to delete "${company.name}"? This action cannot be undone.`}
+          loading={isProcessing}
+          onCancel={() => setShowDeleteConfirm(false)}
+          onConfirm={() => {
+            onDelete(company.id);
+            setShowDeleteConfirm(false);
+            onClose();
+          }}
+        />
+      )}
     </div>
   );
 };

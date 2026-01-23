@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deactivateCompany, activateCompany } from "../thunk/Thunk";
+import { deactivateCompany, activateCompany,deleteCompany, } from "../thunk/Thunk";
 
 const initialState = {
     actionLoading: false,
@@ -54,7 +54,20 @@ const companyAdminSlice = createSlice({
             .addCase(activateCompany.rejected, (state, action) => {
                 state.actionLoading = false;
                 state.actionError = action.payload;
-            });
+            })
+            .addCase(deleteCompany.pending, (state, action) => {
+                state.actionLoading = true;
+                state.actionError = null;
+                state.lastAction = "delete";
+                state.lastActionCompanyId = action.meta.arg;
+              })
+              .addCase(deleteCompany.fulfilled, (state) => {
+                state.actionLoading = false;
+              })
+              .addCase(deleteCompany.rejected, (state, action) => {
+                state.actionLoading = false;
+                state.actionError = action.payload;
+              });
     },
 });
 

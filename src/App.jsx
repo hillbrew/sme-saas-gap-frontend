@@ -13,13 +13,14 @@ import CustomerDetailPage from "./pages/customer/CompanyDetailsPage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import CompanyUsersPage from "./pages/customer/CompanyUsersPage";
 import CompanyInfoPage from "./pages/customer/CompanyInfoPage";
+import SessionManagement from "./components/session/SessionManagement";
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/admin/login" element={<LoginPage />} />
-      <Route path="/admin/2fa" element={<TwoFactorPage />} />
-      <Route path="settings/2fa" element={<Enable2FA />} />
+      <Route path="/admin/login" element={<LoginPage/>} />
+      <Route path="/admin/2fa" element={<TwoFactorPage/>} />
+      <Route path="settings/2fa" element={<Enable2FA/>} />
 
       <Route
         path="/admin"
@@ -38,6 +39,7 @@ export default function App() {
           path="/admin/company/:companyId/users"
           element={<CompanyUsersPage></CompanyUsersPage>}
           />
+          <Route path="/admin/sessions" element={<SessionManagement></SessionManagement>}></Route>
           </Route>
     </Routes>
   );

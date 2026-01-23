@@ -83,3 +83,70 @@ export const activateCompany = createAsyncThunk(
     }
   }
 );
+
+export const deleteCompany = createAsyncThunk(
+  "adminCompany/delete",
+  async (companyId, { rejectWithValue }) => {
+    try {
+      await api.delete(
+        `/api/books/company/companies/${companyId}`
+      );
+      return { companyId };
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to delete company"
+      );
+    }
+  }
+);
+
+
+export const fetchInactiveCompanyUsers = createAsyncThunk(
+  "companyUsers/fetchInactive",
+  async (companyId, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get(`/api/books/company/${companyId}/inactive/users`);
+      return data.users || [];
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Failed to load inactive users");
+    }
+  }
+);
+
+export const updateCompanyUserRole = createAsyncThunk(
+  "companyUsers/updateRole",
+  async ({ companyId, userId, role }, { rejectWithValue }) => {
+    try {
+      await api.put(`/api/books/company/${companyId}/users/${userId}/role`, { role });
+      return { userId, role };
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Failed to update role");
+    }
+  }
+);
+
+export const deactivateCompanyUser = createAsyncThunk(
+  "companyUsers/deactivate",
+  async ({ companyId, userId }, { rejectWithValue }) => {
+    try {
+      await api.put(`/api/books/company/${companyId}/users/${userId}/deactivate`);
+      return { userId };
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Failed to deactivate user");
+    }
+  }
+);
+
+
+export const activateCompanyUser = createAsyncThunk(
+  "companyUsers/activate",
+  async ({ companyId, userId }, { rejectWithValue }) => {
+    try {
+      await api.put(`/api/books/company/${companyId}/users/${userId}/activate`);
+      return { userId };
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Failed to activate user");
+    }
+  }
+);
+
