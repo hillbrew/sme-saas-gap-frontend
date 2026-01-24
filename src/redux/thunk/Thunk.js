@@ -101,52 +101,72 @@ export const deleteCompany = createAsyncThunk(
 );
 
 
+
+
+// Fetch inactive users
 export const fetchInactiveCompanyUsers = createAsyncThunk(
-  "companyUsers/fetchInactive",
-  async (companyId, { rejectWithValue }) => {
+  "companyUsers/fetchInactiveCompanyUsers",
+  async (companyId, thunkAPI) => {
     try {
-      const { data } = await api.get(`/api/books/company/${companyId}/inactive/users`);
-      return data.users || [];
+      const res = await api.get(`api/books/company/${companyId}/inactive/users`);
+      return res.data.users;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to load inactive users");
+      return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
 );
 
+// Update user role
 export const updateCompanyUserRole = createAsyncThunk(
-  "companyUsers/updateRole",
-  async ({ companyId, userId, role }, { rejectWithValue }) => {
+  "companyUsers/updateUserRole",
+  async ({ companyId, userId, role }, thunkAPI) => {
     try {
-      await api.put(`/api/books/company/${companyId}/users/${userId}/role`, { role });
+      const response = await api.put(
+        `api/books/company/${companyId}/users/${userId}/role`,
+        { role } // <-- send role in body
+      );
       return { userId, role };
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to update role");
+      return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
 );
 
+
+// Deactivate user
 export const deactivateCompanyUser = createAsyncThunk(
-  "companyUsers/deactivate",
-  async ({ companyId, userId }, { rejectWithValue }) => {
+  "companyUsers/deactivateUser",
+  async ({ companyId, userId }, thunkAPI) => {
     try {
-      await api.put(`/api/books/company/${companyId}/users/${userId}/deactivate`);
-      return { userId };
+      await api.put(`api/books/company/${companyId}/users/${userId}/deactivate`);
+      return userId;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to deactivate user");
+      return thunkAPI.rejectWithValue(err.response?.data?.message);
     }
   }
 );
 
-
+// Activate user
+// src/redux/thunk/Thunk.js
 export const activateCompanyUser = createAsyncThunk(
-  "companyUsers/activate",
-  async ({ companyId, userId }, { rejectWithValue }) => {
+  "companyUsers/activateUser",
+  async ({ companyId, userId }, thunkAPI) => {
+    if (!companyId || !userId) {
+      return thunkAPI.rejectWithValue("Missing companyId or userId");
+    }
+
     try {
-      await api.put(`/api/books/company/${companyId}/users/${userId}/activate`);
-      return { userId };
+      // Make sure the endpoint is correct
+      const response = await api.put(
+        `api/books/company/${companyId}/users/${userId}/activate`
+      );
+      // Return the company user ID so the reducer can update state
+      return userId;
     } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Failed to activate user");
+      // Send meaningful error message
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
+
 
