@@ -1,5 +1,6 @@
 // redux/slice/authSlice.js
 import { createSlice } from "@reduxjs/toolkit";
+import { clearSessions } from "./sessionSlice";
 
 const initialState = {
   token: null,
@@ -14,11 +15,16 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;
     },
-    logout: (state) => {
+    logout: (state, action) => {
       state.token = null;
       state.isAuthenticated = false;
       localStorage.clear();
       sessionStorage.clear();
+
+      // Dispatch clearSessions if a dispatch is provided
+      if (action.payload?.dispatch) {
+        action.payload.dispatch(clearSessions());
+      }
     },
   },
 });

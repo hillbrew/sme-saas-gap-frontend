@@ -18,6 +18,7 @@
   } from "../../redux/thunk/Thunk";
   import { clearCompanyActionState } from "../../redux/slices/companyActionSlice";
   import CompanyActionsMenu from "../../components/customer/CompanyActionsMenu";
+import SessionManagement from "../../components/session/SessionManagement";
 
 
 
@@ -122,7 +123,7 @@
 
         <div className="bg-white rounded-xl border">
           <div className="flex gap-8 px-6 border-b">
-            {["companies", "subscription", "activity"].map((tab) => (
+            {["companies", "subscription", "activity", "session"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -260,6 +261,9 @@
             {/* Activity Tab */}
             {activeTab === "activity" && (
               <p className="text-gray-500">Activity API coming soon...</p>
+            )}
+             {activeTab === "session" && (
+              <SessionManagement></SessionManagement>
             )}
           </div>
         </div>

@@ -1,56 +1,44 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../services/api";
-import axios from "axios";
 
-
-// 1. Get all sessions
+// 1. Fetch Sessions
 export const fetchSessions = createAsyncThunk(
-  "sessions/fetchAll",
-  async (_, { rejectWithValue }) => {
+  "sessions/fetch",
+  async (userId, { rejectWithValue }) => {
     try {
-      const response = await api.get("/auth/sessions");
-      return response.data?.sessions ?? [];
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      const res = await api.get(`/auth/sessions?userId=${userId}`);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Failed to fetch sessions"
+      );
     }
   }
 );
 
-// 2. Delete a session by ID
+
 export const deleteSession = createAsyncThunk(
   "sessions/delete",
   async (sessionId, { rejectWithValue }) => {
     try {
       await api.delete(`/auth/sessions/${sessionId}`);
-      return sessionId; // reducer will remove it
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      return sessionId;
+    } catch (err) {
+      return rejectWithValue("Failed to delete session");
     }
   }
 );
 
-// 3. Logout current session
-export const logoutCurrentSession = createAsyncThunk(
-  "sessions/logoutCurrent",
-  async (_, { rejectWithValue }) => {
-    try {
-      await api.post("/auth/sessions/logout");
-      return { success: true };
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
-    }
-  }
-);
-
-// 4. Logout all sessions
 export const logoutAllSessions = createAsyncThunk(
   "sessions/logoutAll",
-  async (_, { rejectWithValue }) => {
+  async (userId, { rejectWithValue }) => {
     try {
-      await api.post("/auth/sessions/logout-all");
-      return { success: true };
-    } catch (error) {
-      return rejectWithValue(getErrorMessage(error));
+      await api.post(
+        `/auth/sessions/logout-all?userId=${userId}`
+      );
+      return true;
+    } catch (err) {
+      return rejectWithValue("Failed to logout all sessions");
     }
   }
 );
