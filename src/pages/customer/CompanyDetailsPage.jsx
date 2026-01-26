@@ -19,21 +19,22 @@
   import { clearCompanyActionState } from "../../redux/slices/companyActionSlice";
   import CompanyActionsMenu from "../../components/customer/CompanyActionsMenu";
 import SessionManagement from "../../components/session/SessionManagement";
+import CustomerSubscriptionPanel from "../../components/subscription/CustomerSubscriptionPanel";
 
 
-
-  const CustomerDetailPage = () => {
-    const { customerId } = useParams();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-
-    const [activeTab, setActiveTab] = useState("companies");
-    const [openActionCompanyId, setOpenActionCompanyId] = useState(null);
-    const [deleteCompanyId, setDeleteCompanyId] = useState(null);
-
-
-
-    const companies = useSelector((state) => state.customers.companies);
+const CustomerDetailPage = () => {
+  const { customerId } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  const [activeTab, setActiveTab] = useState("companies");
+  const [openActionCompanyId, setOpenActionCompanyId] = useState(null);
+  const [deleteCompanyId, setDeleteCompanyId] = useState(null);
+  
+  
+  
+  const companies = useSelector((state) => state.customers.companies);
+    console.log("companies",companies)
     const loading = useSelector((state) => state.customers.companiesLoading);
     const error = useSelector((state) => state.customers.companiesError);
     const {customers,companiesForCustomerId} = useSelector(
@@ -160,6 +161,7 @@ import SessionManagement from "../../components/session/SessionManagement";
                       <tr className="text-gray-600 text-xs uppercase tracking-wide">
                         <th className="text-left px-4 py-3">Company</th>
                         <th className="text-center px-4 py-3">Status</th>
+                        <th className="text-center px-4 py-3">Role</th>
                         <th className="text-center px-4 py-3">Country</th>
                         <th className="text-center px-4 py-3">Users</th>
                         <th className="text-center px-4 py-3">Currency</th>
@@ -192,6 +194,18 @@ import SessionManagement from "../../components/session/SessionManagement";
                             </span>
                           </td>
 
+                            <td className="px-4 py-3 text-center">
+                            <span
+                              className={`text-xs font-medium px-3 py-1 rounded-full ${company.role === "OWNER"
+                                  ? "bg-purple-100 text-purple-700"
+                                  : "bg-yellow-100 text-yellow-700"
+                                }`}
+                            >
+                              {company.role}
+                            </span>
+                          </td>
+                         
+
                           {/* Country */}
                           <td className="px-4 py-3 text-center text-gray-700">
                             {company.country}
@@ -213,7 +227,8 @@ import SessionManagement from "../../components/session/SessionManagement";
                           </td>
 
                           {/* Action */}
-                          <td className="px-4 py-3 text-right">
+                        <td className="px-4 py-3 text-right relative">
+                          <div className="inline-flex items-center gap-3">
                             <button
                               onClick={() =>
                                 navigate(`/admin/company/${company.id}/users`)
@@ -222,27 +237,28 @@ import SessionManagement from "../../components/session/SessionManagement";
                             >
                               View Users
                             </button>
-                            <td className="px-4 py-3 text-right relative">
-                              <button
-                                onClick={() => openActions(company.id)}
-                                className="ml-3 text-sm text-gray-600 hover:text-gray-900"
-                              >
-                                More
-                              </button>
 
-                              {openActionCompanyId === company.id && (
-                                <CompanyActionsMenu
-                                  company={company}
-                                  onDeactivate={handleDeactivate}
-                                  onActivate={handleActivate}
-                                  onDelete={handleDeleteCompany}
-                                  actionLoading={actionLoading}
-                                  lastActionCompanyId={lastActionCompanyId}
-                                  onClose={closeActions}
-                                />
-                              )}
-                            </td>
-                          </td>
+                            <button
+                              onClick={() => openActions(company.id)}
+                              className="text-sm text-gray-600 hover:text-gray-900"
+                            >
+                              More
+                            </button>
+                          </div>
+
+                          {openActionCompanyId === company.id && (
+                            <CompanyActionsMenu
+                              company={company}
+                              onDeactivate={handleDeactivate}
+                              onActivate={handleActivate}
+                              onDelete={handleDeleteCompany}
+                              actionLoading={actionLoading}
+                              lastActionCompanyId={lastActionCompanyId}
+                              onClose={closeActions}
+                            />
+                          )}
+                        </td>
+
                         </tr>
                       ))}
                     </tbody>
@@ -255,7 +271,7 @@ import SessionManagement from "../../components/session/SessionManagement";
 
             {/* Subscription Tab */}
             {activeTab === "subscription" && (
-              <p className="text-gray-500">Subscription API coming soon...</p>
+               <CustomerSubscriptionPanel userId={customerId} />
             )}
 
             {/* Activity Tab */}
@@ -263,7 +279,7 @@ import SessionManagement from "../../components/session/SessionManagement";
               <p className="text-gray-500">Activity API coming soon...</p>
             )}
              {activeTab === "session" && (
-              <SessionManagement></SessionManagement>
+              <SessionManagement userId ={customerId}/>
             )}
           </div>
         </div>

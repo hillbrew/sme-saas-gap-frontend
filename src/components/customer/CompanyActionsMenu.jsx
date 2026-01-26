@@ -67,16 +67,11 @@ const CompanyActionsMenu = ({
         </button>
       )}
 
-<button
+      <button
         disabled={isProcessing}
         onClick={() => setShowDeleteConfirm(true)} 
         className="w-full flex items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 disabled:opacity-50"
       >
-        {isProcessing ? (
-          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-        ) : (
-          <Trash2 className="w-4 h-4 mr-2" />
-        )}
         Delete Company
       </button>
 

@@ -19,9 +19,10 @@ export const fetchSessions = createAsyncThunk(
 
 export const deleteSession = createAsyncThunk(
   "sessions/delete",
-  async (sessionId, { rejectWithValue }) => {
+  async ({sessionId, userId},  { rejectWithValue }) => {
     try {
-      await api.delete(`/auth/sessions/${sessionId}`);
+      const query = userId ? `?userId=${userId}` : "";
+      await api.delete(`/auth/sessions/${sessionId}${query}`);
       return sessionId;
     } catch (err) {
       return rejectWithValue("Failed to delete session");

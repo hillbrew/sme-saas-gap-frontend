@@ -7,20 +7,20 @@ import {
   logoutAllSessions,
 } from "../../redux/thunk/SessionThunk";
 
-const SessionManagement = () => {
+const SessionManagement = ({userId}) => {
   const dispatch = useDispatch();
   const { sessions = [], loading, error } = useSelector(
     (state) => state.sessions
   );
 
+  console.log(sessions)
+
   useEffect(() => {
-    dispatch(fetchSessions());
+    dispatch(fetchSessions(userId));
   }, [dispatch]);
 
   const handleDelete = async (sessionId) => {
-    if (!window.confirm("Are you sure you want to delete this session?")) return;
-
-    await dispatch(deleteSession(sessionId));
+    await dispatch(deleteSession({ sessionId, userId }));
     dispatch(fetchSessions());
   };
 
@@ -28,14 +28,12 @@ const SessionManagement = () => {
     if (!window.confirm("Logout current session?")) return;
 
     await dispatch(logoutCurrentSession());
-    dispatch(fetchSessions());
+    dispatch(fetchSessions(userId));
   };
 
   const handleLogoutAll = async () => {
-    if (!window.confirm("Logout all sessions?")) return;
-
-    await dispatch(logoutAllSessions());
-    dispatch(fetchSessions());
+    await dispatch(logoutAllSessions(userId));
+    dispatch(fetchSessions(userId));
   };
 
   return (
@@ -43,14 +41,8 @@ const SessionManagement = () => {
       <h1 className="text-2xl font-semibold mb-4">Session Management</h1>
 
       <div className="flex gap-3 mb-4">
-        {/* <button
-          onClick={handleLogoutCurrent}
-          disabled={loading}
-          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
-        >
-          Logout Current Session
-        </button> */}
-
+        
+         {!loading && sessions.length > 1 && (
         <button
           onClick={handleLogoutAll}
           disabled={loading}
@@ -58,6 +50,7 @@ const SessionManagement = () => {
         >
           Logout All Sessions
         </button>
+         )}
       </div>
 
       {loading && <p className="text-center">Loading sessions...</p>}
@@ -73,8 +66,9 @@ const SessionManagement = () => {
             <thead className="bg-gray-100">
               <tr>
                 <th className="p-3 text-left">Session ID</th>
-                <th className="p-3 text-left">User</th>
+                <th className="p-3 text-left">Device info</th>
                 <th className="p-3 text-left">Created At</th>
+                <th className="p-3 text-left">IP Address</th>
                 <th className="p-3 text-left">Actions</th>
               </tr>
             </thead>
@@ -82,16 +76,19 @@ const SessionManagement = () => {
             <tbody>
               {sessions.map((session) => (
                 <tr key={session._id} className="border-t hover:bg-gray-50">
-                  <td className="p-3">{session._id}</td>
+                  <td className="p-3">{session.id}</td>
                   <td className="p-3">
-                    {session.user?.email || "N/A"}
+                    {session.device_info || "N/A"}
                   </td>
                   <td className="p-3">
-                    {new Date(session.createdAt).toLocaleString()}
+                    {new Date(session.created_at).toLocaleString()}
+                  </td>
+                    <td className="p-3">
+                     {session.ip_address}
                   </td>
                   <td className="p-3">
                     <button
-                      onClick={() => handleDelete(session._id)}
+                      onClick={() => handleDelete(session.id)}
                       className="text-red-600 hover:underline text-sm"
                     >
                       Delete
