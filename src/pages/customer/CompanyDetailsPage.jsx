@@ -140,7 +140,7 @@ const CustomerDetailPage = () => {
           <div className="p-6">
             {/* Companies Tab */}
             {activeTab === "companies" && (
-              <div className="mt-4 bg-white rounded-lg max-h-[60vh] shadow-sm border overflow-x-auto">
+              <div className="mt-4 bg-white rounded-lg min-h-[40vh] shadow-sm border overflow-x-auto">
 
                 {loading && (
                   <p className="text-gray-500 p-4">Loading companies...</p>
