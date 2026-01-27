@@ -22,11 +22,11 @@ export const fetchCompanySubscription = createAsyncThunk(
 
 export const fetchPlans = createAsyncThunk(
   "subscription/fetchPlans",
-  async ({ interval = "month" } = {}, { rejectWithValue }) => {
+  async ({ interval,companyId = "month" } = {}, { rejectWithValue }) => {
     try {
       const res = await api.get(
         "/api/subscribers/plans",
-        { params: { interval } }
+        { params: { interval,companyId } }
       );
 
        return {
@@ -38,6 +38,34 @@ export const fetchPlans = createAsyncThunk(
         } catch (err) {
       return rejectWithValue(
         err.response?.data?.message || "Failed to load plans"
+      );
+    }
+  }
+);
+
+export const  changePlan = createAsyncThunk(
+  "subscription/changePlan",
+  async (
+    { companyId, planCode, billing },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await api.post(
+        "/api/subscribers/billing/change-plan",
+        {
+          company_id: companyId,
+          new_plan_code: planCode,
+          interval: billing === "annual" ? "year" : "month",
+        }
+      );
+      
+     return res.data.result.currentPlan;
+        } catch (err) {
+          console.log(err)
+      return rejectWithValue(
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        "Plan change failed"
       );
     }
   }

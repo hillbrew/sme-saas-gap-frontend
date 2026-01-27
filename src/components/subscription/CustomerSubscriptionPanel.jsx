@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanySubscription } from "../../redux/thunk/subscriptionThunk";
 import { CreditCard, Calendar, ShieldCheck } from "lucide-react";
+import ManagePlansModal from "./ManagePlansModal";
 
 const CustomerSubscriptionPanel = ({ companyId }) => {
   const dispatch = useDispatch();
@@ -9,6 +10,8 @@ const CustomerSubscriptionPanel = ({ companyId }) => {
   const { data, loading, error } = useSelector(
     (state) => state.subscription
   );
+  const [showManagePlans, setShowManagePlans] = useState(false);
+
 
   console.log("data",data)
 
@@ -45,12 +48,15 @@ const CustomerSubscriptionPanel = ({ companyId }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  
+
       {/* Plan Info */}
       <div className="border rounded-xl p-6 bg-white">
         <div className="flex items-center gap-3 mb-4">
           <CreditCard className="w-5 h-5 text-blue-600" />
           <h3 className="font-semibold text-lg">Plan Details</h3>
         </div>
+         
 
         <div className="space-y-2 text-sm">
           <p>
@@ -114,8 +120,27 @@ const CustomerSubscriptionPanel = ({ companyId }) => {
           Any upgrades, downgrades, or cancellations will reflect here.
         </p>
       </div>
+      <button
+        onClick={() => setShowManagePlans(true)}
+        className="mt-4 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+      >
+        Manage Plans
+      </button>
+
+      {showManagePlans && (
+        <ManagePlansModal
+          companyId={companyId}
+          currentPlanCode={data.plan_code}
+          currentPlanInterval={data.interval}
+          onClose={() => setShowManagePlans(false)}
+        />
+      )}
     </div>
+    
   );
 };
+
+
+
 
 export default CustomerSubscriptionPanel;

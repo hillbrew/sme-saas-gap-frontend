@@ -1,6 +1,6 @@
 // redux/slices/subscriptionSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCompanySubscription } from "../thunk/subscriptionThunk";
+import { changePlan, fetchCompanySubscription, fetchPlans } from "../thunk/subscriptionThunk";
 
 const initialState = {
   data: null,
@@ -9,7 +9,8 @@ const initialState = {
   companyId: null,
   plans: [],
   plansLoading: false,
-  fetchPlansError:null
+  fetchPlansError:null,
+ downgradingPlanCode: null,  
 };
 
 const subscriptionSlice = createSlice({
@@ -45,6 +46,21 @@ const subscriptionSlice = createSlice({
       .addCase(fetchPlans.rejected, (state, action) => {
         state.plansLoading = false;
         state.fetchPlansError = action.payload;
+      })
+      .addCase(changePlan.pending, (state, action) => {
+        state.downgradingPlanCode = action.meta.arg.planCode;
+        state.changePlanError = null;
+      })
+      .addCase(changePlan.fulfilled, (state, action) => {
+        state.downgradingPlanCode = null;
+        state.data = {
+          ...state.data,
+          ...action.payload,
+        };
+      })
+      .addCase(changePlan.rejected, (state, action) => {
+        state.downgradingPlanCode = null;
+        state.changePlanError = action.payload;
       })
   },
 });
