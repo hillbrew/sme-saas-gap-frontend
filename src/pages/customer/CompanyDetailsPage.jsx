@@ -34,7 +34,6 @@ const CustomerDetailPage = () => {
   
   
   const companies = useSelector((state) => state.customers.companies);
-    console.log("companies",companies)
     const loading = useSelector((state) => state.customers.companiesLoading);
     const error = useSelector((state) => state.customers.companiesError);
     const {customers,companiesForCustomerId} = useSelector(
@@ -177,7 +176,9 @@ const CustomerDetailPage = () => {
                           className="hover:bg-gray-50 transition"
                         >
                           {/* Company */}
-                          <td className="px-4 py-3 flex items-center gap-2 font-medium">
+                          <td className="px-4 py-3 flex items-center gap-2 font-medium cursor-pointer"   
+                          onClick={() => navigate(`/admin/manage-company/${company.id}`)}
+                          >
                             <Building2 className="w-4 h-4 text-gray-500" />
                             {company.name}
                           </td>
@@ -269,10 +270,7 @@ const CustomerDetailPage = () => {
             )}
 
 
-            {/* Subscription Tab */}
-            {activeTab === "subscription" && (
-               <CustomerSubscriptionPanel userId={customerId} />
-            )}
+
 
             {/* Activity Tab */}
             {activeTab === "activity" && (

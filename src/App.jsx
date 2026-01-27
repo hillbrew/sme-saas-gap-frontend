@@ -14,6 +14,7 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 import CompanyUsersPage from "./pages/customer/CompanyUsersPage";
 import CompanyInfoPage from "./pages/customer/CompanyInfoPage";
 import SessionManagement from "./components/session/SessionManagement";
+import ManageCompanyPage from "./pages/customer/ManageCompanyPage";
 
 export default function App() {
   return (
@@ -34,10 +35,11 @@ export default function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="customer-list" element={<CustomersListPage />} />
         {/* <Route  element={<CustomerDetailPage />} */}
-        <Route path="/admin/customer-detail/:customerId" element={<CustomerDetailPage></CustomerDetailPage>} />
+        <Route path="/admin/customer-detail/:customerId" element={<CustomerDetailPage/>} />
+        <Route path="/admin/manage-company/:companyId" element={<ManageCompanyPage/>} />
         <Route
           path="/admin/company/:companyId/users"
-          element={<CompanyUsersPage></CompanyUsersPage>}
+          element={<CompanyUsersPage/>}
           />
           <Route path="/admin/sessions" element={<SessionManagement></SessionManagement>}></Route>
           </Route>

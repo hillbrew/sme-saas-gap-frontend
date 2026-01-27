@@ -3,19 +3,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanySubscription } from "../../redux/thunk/subscriptionThunk";
 import { CreditCard, Calendar, ShieldCheck } from "lucide-react";
 
-const CustomerSubscriptionPanel = ({ userId }) => {
+const CustomerSubscriptionPanel = ({ companyId }) => {
   const dispatch = useDispatch();
 
   const { data, loading, error } = useSelector(
     (state) => state.subscription
   );
 
+  console.log("data",data)
+
   useEffect(() => {
-    if (userId) {
-      // userId === customerId (as per your requirement)
-      dispatch(fetchCompanySubscription(userId));
+    if (companyId) {
+      // companyId === customerId (as per your requirement)
+      dispatch(fetchCompanySubscription(companyId));
     }
-  }, [userId, dispatch]);
+  }, [companyId, dispatch]);
 
   if (loading) {
     return (
@@ -85,9 +87,9 @@ const CustomerSubscriptionPanel = ({ userId }) => {
 
         <div className="space-y-2 text-sm">
           <p>
-            <span className="text-gray-500">Trial End:</span>{" "}
-            {data.trial_end
-              ? new Date(data.trial_end).toLocaleDateString()
+            <span className="text-gray-500">Current Period Start:</span>{" "}
+            {data.current_period_start
+              ? new Date(data.current_period_start).toLocaleDateString()
               : "N/A"}
           </p>
 

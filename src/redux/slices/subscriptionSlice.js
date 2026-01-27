@@ -7,6 +7,9 @@ const initialState = {
   loading: false,
   error: null,
   companyId: null,
+  plans: [],
+  plansLoading: false,
+  fetchPlansError:null
 };
 
 const subscriptionSlice = createSlice({
@@ -29,7 +32,20 @@ const subscriptionSlice = createSlice({
       .addCase(fetchCompanySubscription.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+       .addCase(fetchPlans.pending, (state) => {
+        state.plansLoading = true;
+        state.fetchPlansError = null;
+      })
+      .addCase(fetchPlans.fulfilled, (state, action) => {
+        state.plansLoading = false;
+        state.plans = action.payload.plans;
+      })
+      .addCase(fetchPlans.rejected, (state, action) => {
+        state.plansLoading = false;
+        state.fetchPlansError = action.payload;
+      })
   },
 });
 
