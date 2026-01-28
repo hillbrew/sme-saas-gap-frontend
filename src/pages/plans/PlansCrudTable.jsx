@@ -18,11 +18,6 @@ const PlansCrudTable = () => {
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [loadingPlanCode, setLoadingPlanCode] = useState(null);
 
-
-  console.log("updateLoading",updateLoading);
-  console.log("plansLoading",plansLoading);
-  console.log("entitlementsLoading",entitlementsLoading);
-
   // Fetch all plans
   useEffect(() => {
     dispatch(fetchPlansManager());
