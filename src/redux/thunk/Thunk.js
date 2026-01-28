@@ -170,3 +170,19 @@ export const activateCompanyUser = createAsyncThunk(
 );
 
 
+export const fetchCompanyProfile = createAsyncThunk(
+  "companyProfile/fetch",
+  async (companyId, { rejectWithValue }) => {
+    try {
+      const res = await api.get(
+        `/api/books/company/profile/${companyId}`
+      );
+
+      return res.data.profile;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.error || "Failed to fetch company profile"
+      );
+    }
+  }
+);

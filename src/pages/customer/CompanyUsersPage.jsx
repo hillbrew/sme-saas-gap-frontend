@@ -107,7 +107,7 @@ const handleConfirm = async () => {
 
 
   return (
-    <div className="p-4 bg-gray-50 min-h-screen">
+    <div className="p-4 bg-gray-50 ">
       <button
         onClick={() => navigate(-1)}
         className="flex items-center text-sm text-gray-600 hover:text-gray-900 mb-4"

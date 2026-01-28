@@ -11,7 +11,6 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import { CustomersListPage } from "./pages/customer/CustomersListPage";
 import CustomerDetailPage from "./pages/customer/CompanyDetailsPage";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
-import CompanyUsersPage from "./pages/customer/CompanyUsersPage";
 import CompanyInfoPage from "./pages/customer/CompanyInfoPage";
 import SessionManagement from "./components/session/SessionManagement";
 import ManageCompanyPage from "./pages/customer/ManageCompanyPage";
@@ -38,10 +37,6 @@ export default function App() {
         {/* <Route  element={<CustomerDetailPage />} */}
         <Route path="/admin/customer-detail/:customerId" element={<CustomerDetailPage/>} />
         <Route path="/admin/manage-company/:companyId" element={<ManageCompanyPage/>} />
-        <Route
-          path="/admin/company/:companyId/users"
-          element={<CompanyUsersPage/>}
-          />
           <Route path="/admin/sessions" element={<SessionManagement></SessionManagement>}></Route>
           <Route path="/admin/plans-manager" element={<PlanManager></PlanManager>} />
           </Route>

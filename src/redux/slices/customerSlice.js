@@ -1,11 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCustomers, fetchUserCompanies, fetchCompanyUsers } from "../thunk/Thunk";
+import { fetchCustomers, fetchUserCompanies, fetchCompanyUsers, fetchCompanyProfile } from "../thunk/Thunk";
 import { activateCompany, deactivateCompany,} from "../thunk/Thunk";
 
 const initialState = {
   customers: [],
   companies: [],
   companyUsers: [],
+  profile: null,
+  profileLoading: false,
+  profileError: null,
 
   // Loading & error states
   customersLoading: false,
@@ -81,14 +84,25 @@ const customerSlice = createSlice({
       /* ================= ACTIVATE COMPANY ================= */
       .addCase(activateCompany.fulfilled, (state, action) => {
         const { companyId } = action.payload;
-
         const company = state.companies.find(
           (c) => c.id === companyId
         );
-
         if (company) {
           company.is_active = true;
         }
+      })
+
+      .addCase(fetchCompanyProfile.pending, (state) => {
+        state.profileLoading = true;
+        state.profileError = null;
+      })
+      .addCase(fetchCompanyProfile.fulfilled, (state, action) => {
+        state.profileLoading = false;
+        state.profile = action.payload;
+      })
+      .addCase(fetchCompanyProfile.rejected, (state, action) => {
+        state.profileLoading = false;
+        state.profileError = action.payload;
       });
   },
 });

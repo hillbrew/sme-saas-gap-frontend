@@ -31,9 +31,6 @@ const CustomerDetailPage = () => {
   const [activeTab, setActiveTab] = useState("companies");
   const [openActionCompanyId, setOpenActionCompanyId] = useState(null);
   const [deleteCompanyId, setDeleteCompanyId] = useState(null);
-
-  const [selectedCompany, setSelectedCompany] = useState(null);
-const [showDetails, setShowDetails] = useState(false);
   
   
   
@@ -127,7 +124,7 @@ const [showDetails, setShowDetails] = useState(false);
 
         <div className="bg-white rounded-xl border">
           <div className="flex gap-8 px-6 border-b">
-            {["companies", "subscription", "activity", "session"].map((tab) => (
+            {["companies", "user activity", "session"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
