@@ -14,6 +14,7 @@ const menuItems = [
   { path: "/admin/products", label: "Products", icon: Package },
   { path: "/admin/countries", label: "Countries & Tax", icon: Globe },
   { path: "/admin/roles", label: "Roles & Admins", icon: Shield },
+  { path: "/admin/plans-manager", label: "Plans Management", icon: Shield },
 ];
 
 const Sidebar = () => {

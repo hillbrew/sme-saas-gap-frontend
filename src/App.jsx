@@ -15,6 +15,7 @@ import CompanyUsersPage from "./pages/customer/CompanyUsersPage";
 import CompanyInfoPage from "./pages/customer/CompanyInfoPage";
 import SessionManagement from "./components/session/SessionManagement";
 import ManageCompanyPage from "./pages/customer/ManageCompanyPage";
+import PlanManager from "./pages/plans/PlanManager";
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
           element={<CompanyUsersPage/>}
           />
           <Route path="/admin/sessions" element={<SessionManagement></SessionManagement>}></Route>
+          <Route path="/admin/plans-manager" element={<PlanManager></PlanManager>} />
           </Route>
     </Routes>
   );

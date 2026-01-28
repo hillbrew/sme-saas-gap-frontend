@@ -20,6 +20,7 @@
   import CompanyActionsMenu from "../../components/customer/CompanyActionsMenu";
 import SessionManagement from "../../components/session/SessionManagement";
 import CustomerSubscriptionPanel from "../../components/subscription/CustomerSubscriptionPanel";
+import CompanyDetailsPopup from "../../components/customer/CompanyDetailsPopup";
 
 
 const CustomerDetailPage = () => {
@@ -30,6 +31,9 @@ const CustomerDetailPage = () => {
   const [activeTab, setActiveTab] = useState("companies");
   const [openActionCompanyId, setOpenActionCompanyId] = useState(null);
   const [deleteCompanyId, setDeleteCompanyId] = useState(null);
+
+  const [selectedCompany, setSelectedCompany] = useState(null);
+const [showDetails, setShowDetails] = useState(false);
   
   
   
@@ -247,17 +251,33 @@ const CustomerDetailPage = () => {
                             </button>
                           </div>
 
-                          {openActionCompanyId === company.id && (
-                            <CompanyActionsMenu
-                              company={company}
-                              onDeactivate={handleDeactivate}
-                              onActivate={handleActivate}
-                              onDelete={handleDeleteCompany}
-                              actionLoading={actionLoading}
-                              lastActionCompanyId={lastActionCompanyId}
-                              onClose={closeActions}
-                            />
-                          )}
+                          <div className="fixed z-50 w-80 bg-white rounded-lg shadow right-20 top-[60vh]">
+
+                                                    {openActionCompanyId === company.id && (
+  <CompanyActionsMenu
+    company={company}
+    onDeactivate={handleDeactivate}
+    onActivate={handleActivate}
+    onDelete={handleDeleteCompany}
+    actionLoading={actionLoading}
+    lastActionCompanyId={lastActionCompanyId}
+    onClose={closeActions}
+    onViewDetails={(company) => {
+      setSelectedCompany(company);
+      setShowDetails(true);
+    }}
+  />
+)}
+
+{showDetails && selectedCompany && (
+  <CompanyDetailsPopup
+    company={selectedCompany}
+    onClose={() => setShowDetails(false)}
+  />
+)}
+                          </div>
+
+
                         </td>
 
                         </tr>

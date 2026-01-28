@@ -5,6 +5,7 @@ import companyActions from "./slices/companyActionSlice";
 import companyUsersReducer from "../redux/slices/companyUsersSlice";
 import sessionReducer from "./slices/sessionSlice";
 import subscriptionReducer from "./slices/subscriptionSlice"
+import plansReducer from "./slices/PlansSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,8 @@ export const store = configureStore({
     companyActions,
     companyUsers: companyUsersReducer,
     sessions: sessionReducer,
-    subscription: subscriptionReducer
+    subscription: subscriptionReducer,
+    plans:plansReducer
+    
   },
 });
