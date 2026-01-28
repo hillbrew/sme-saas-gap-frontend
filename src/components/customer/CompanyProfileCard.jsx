@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCompanyProfile } from "../../redux/thunk/Thunk";
+import { fetchCompanyProfile } from "../../redux/thunk/thunk";
 
 const Detail = ({ label, value }) => (
   <div className="flex flex-col">

@@ -10,12 +10,12 @@
   import { useState, useEffect } from "react";
   import { useNavigate, useParams } from "react-router-dom";
   import { useDispatch, useSelector } from "react-redux";
-  import { fetchUserCompanies,deleteCompany } from "../../redux/thunk/Thunk";
+  import { fetchUserCompanies,deleteCompany } from "../../redux/thunk/thunk";
   import CustomerOverview from "../../components/customer/CustomerOverview";
   import {
     activateCompany,
     deactivateCompany,
-  } from "../../redux/thunk/Thunk";
+  } from "../../redux/thunk/thunk";
   import { clearCompanyActionState } from "../../redux/slices/companyActionSlice";
   import CompanyActionsMenu from "../../components/customer/CompanyActionsMenu";
 import SessionManagement from "../../components/session/SessionManagement";
@@ -31,7 +31,7 @@ const CustomerDetailPage = () => {
   const [activeTab, setActiveTab] = useState("companies");
   const [openActionCompanyId, setOpenActionCompanyId] = useState(null);
   const [deleteCompanyId, setDeleteCompanyId] = useState(null);
-  
+  const [showDetails,setShowDetails] =useState(null);
   
   
   const companies = useSelector((state) => state.customers.companies);

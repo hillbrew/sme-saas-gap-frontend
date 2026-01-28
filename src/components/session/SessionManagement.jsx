@@ -5,7 +5,7 @@ import {
   deleteSession,
   // logoutCurrentSession,
   logoutAllSessions,
-} from "../../redux/thunk/SessionThunk";
+} from "../../redux/thunk/sessionThunk";
 
 const SessionManagement = ({userId}) => {
   const dispatch = useDispatch();

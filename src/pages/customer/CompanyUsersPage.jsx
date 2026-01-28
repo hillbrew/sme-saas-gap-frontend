@@ -12,7 +12,7 @@ import {
   deactivateCompanyUser,
   activateCompanyUser,
   updateCompanyUserRole,
-} from "../../redux/thunk/Thunk";
+} from "../../redux/thunk/thunk";
 import ConfirmActionModal from "../../components/customer/ConfirmActionModal";
 
 const CompanyUsersPage = () => {

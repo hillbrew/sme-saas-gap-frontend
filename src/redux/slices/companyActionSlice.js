@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deactivateCompany, activateCompany,deleteCompany, } from "../thunk/Thunk";
+import { deactivateCompany, activateCompany,deleteCompany, } from "../thunk/thunk";
 
 const initialState = {
     actionLoading: false,

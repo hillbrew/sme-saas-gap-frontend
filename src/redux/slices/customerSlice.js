@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchCustomers, fetchUserCompanies, fetchCompanyUsers, fetchCompanyProfile } from "../thunk/Thunk";
-import { activateCompany, deactivateCompany,} from "../thunk/Thunk";
+import { fetchCustomers, fetchUserCompanies, fetchCompanyUsers, fetchCompanyProfile } from "../thunk/thunk";
+import { activateCompany, deactivateCompany,} from "../thunk/thunk";
 
 const initialState = {
   customers: [],

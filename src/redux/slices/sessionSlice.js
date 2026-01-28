@@ -5,7 +5,7 @@ import {
   fetchSessions,
   deleteSession,
   logoutAllSessions,
-} from "../thunk/SessionThunk";
+} from "../thunk/sessionThunk";
 
 const sessionSlice = createSlice({
   name: "sessions",

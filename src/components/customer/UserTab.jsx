@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCompanyUsers, updateCompanyUserRole } from "../../redux/thunk/Thunk";
+import { fetchCompanyUsers, updateCompanyUserRole } from "../../redux/thunk/thunk";
 
 const ALL_ROLES = ["ACCOUNTANT", "AUDITOR", "VIEWER"];
 

@@ -14,7 +14,7 @@ import ProtectedRoute from "./components/routes/ProtectedRoute";
 import CompanyInfoPage from "./pages/customer/CompanyInfoPage";
 import SessionManagement from "./components/session/SessionManagement";
 import ManageCompanyPage from "./pages/customer/ManageCompanyPage";
-import PlanManager from "./pages/plans/PlanManager";
+import PlanManager from "./pages/plans/PlansCrudTable";
 
 export default function App() {
   return (

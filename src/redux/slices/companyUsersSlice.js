@@ -5,7 +5,7 @@ import {
   updateCompanyUserRole,
   deactivateCompanyUser,
   activateCompanyUser,
-} from "../thunk/Thunk";
+} from "../thunk/thunk";
 
 const companyUsersSlice = createSlice({
   name: "companyUsers",

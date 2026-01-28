@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { fetchCustomers } from "../../redux/thunk/Thunk";
+import { fetchCustomers } from "../../redux/thunk/thunk";
 
 export function CustomersListPage() {
   const dispatch = useDispatch();

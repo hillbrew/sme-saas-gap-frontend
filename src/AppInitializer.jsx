@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAuthFromStorage } from "./redux/slices/authSlice";
-import { fetchCustomers } from "./redux/thunk/Thunk";
+import { fetchCustomers } from "./redux/thunk/thunk";
 
 
 const AppInitializer = ({ children }) => {

@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedPlan, selectPlans } from "../../redux/slices/PlansSlice";
-import { fetchPlansManager, fetchEntitlements, updateEntitlements } from "../../redux/thunk/PlansThunk";
+// import { setSelectedPlan, selectPlans } from "../../redux/slices/PlansSlice";
+
+import { fetchPlansManager, fetchEntitlements, updateEntitlements } from "../../redux/thunk/plansThunk";
 
 const PlansCrudTable = () => {
   const dispatch = useDispatch();
-  const plans = useSelector(selectPlans);
+  // const plans = useSelector(selectPlans);
+  const {plans,entitlements,plansLoading,entitlementsLoading,updateLoading} = useSelector((state) => state.plans);
+
   const [selectedPlan, setSelectedPlanLocal] = useState(null);
   const [localState, setLocalState] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [searchTerm, setSearchTerm] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [loadingPlanCode, setLoadingPlanCode] = useState(null);
+
+
+  console.log("updateLoading",updateLoading);
+  console.log("plansLoading",plansLoading);
+  console.log("entitlementsLoading",entitlementsLoading);
 
   // Fetch all plans
   useEffect(() => {
@@ -31,7 +39,7 @@ const PlansCrudTable = () => {
   // Fetch entitlements when editing a plan
   const handleEdit = async (planCode, planName) => {
     try {
-      setLoading(true);
+      setLoadingPlanCode(planCode);
       const data = await dispatch(fetchEntitlements(planCode)).unwrap();
       setLocalState(data.entitlements || []);
       setSelectedPlanLocal({ code: planCode, name: planName });
@@ -41,7 +49,7 @@ const PlansCrudTable = () => {
       setMessage({ text: "Failed to fetch entitlements", type: "error" });
       console.error("Failed to fetch entitlements", err);
     } finally {
-      setLoading(false);
+      setLoadingPlanCode(null);
     }
   };
 
@@ -184,7 +192,30 @@ const PlansCrudTable = () => {
 
         {/* Plans Table */}
         <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-          {filteredPlans.length === 0 ? (
+          {plansLoading ? (
+            <div className="flex items-center justify-center py-16">
+              <svg
+                className="h-10 w-10 animate-spin text-blue-600"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                />
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                />
+              </svg>
+            </div>
+          ) :filteredPlans.length === 0 ? (
             <div className="text-center py-12">
               <svg
                 className="mx-auto h-12 w-12 text-gray-400"
@@ -242,20 +273,42 @@ const PlansCrudTable = () => {
                           onClick={() => handleEdit(plan.plan_code, plan.plan_name)}
                           className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
                         >
-                          <svg
-                            className="h-4 w-4 mr-1"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                            />
-                          </svg>
-                          
+                          {loadingPlanCode === plan.plan_code ? (
+                            <svg
+                              className="h-4 w-4 mr-1 animate-spin text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              className="h-4 w-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                              />
+                            </svg>
+                          )}
                         </button>
                       </td>
                     </tr>
@@ -332,7 +385,7 @@ const PlansCrudTable = () => {
 
               {/* Modal Content */}
               <div className="flex-1 overflow-y-auto px-6 py-4">
-                {loading ? (
+                {entitlementsLoading ? (
                   <div className="flex items-center justify-center py-12">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                   </div>
