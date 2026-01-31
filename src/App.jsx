@@ -15,6 +15,7 @@ import CompanyInfoPage from "./pages/customer/CompanyInfoPage";
 import SessionManagement from "./components/session/SessionManagement";
 import ManageCompanyPage from "./pages/customer/ManageCompanyPage";
 import PlanManager from "./pages/plans/PlansCrudTable";
+import Products from "./pages/product/Products";
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="customer-list" element={<CustomersListPage />} />
         {/* <Route  element={<CustomerDetailPage />} */}
+           <Route path="products" element={<Products></Products>} />
         <Route path="/admin/customer-detail/:customerId" element={<CustomerDetailPage/>} />
         <Route path="/admin/manage-company/:companyId" element={<ManageCompanyPage/>} />
           <Route path="/admin/sessions" element={<SessionManagement></SessionManagement>}></Route>
