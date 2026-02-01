@@ -1,22 +1,21 @@
 import { ArrowLeft } from "lucide-react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomerSubscriptionPanel from "../../components/subscription/CustomerSubscriptionPanel";
 import CompanyUsersPage from "./CompanyUsersPage";
 import CompanyProfileCard from "../../components/customer/CompanyProfileCard";
+import CompanyActivityStripeTab from "../../components/customer/CompanyActivityStripeTab";
 
-// import CompanyUsersTab from "../../components/company/CompanyUsersTab";
-// import CompanySubscriptionTab from "../../components/company/CompanySubscriptionTab";
-// import CompanyActivityTab from "../../components/company/CompanyActivityTab";
-// import { fetchCompanyById } from "../../redux/thunk/Thunk";
+
 
 const ManageCompanyPage = () => {
   const { companyId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedCompany, setSelectedCompany] = useState(null);
-
+  const { state } = useLocation();
+  const customer = state?.customer;
 
   const [activeTab, setActiveTab] = useState("subscription");
   const companies = useSelector((state) => state.customers.companies);
@@ -45,18 +44,6 @@ const Detail = ({ label, value }) => (
   </div>
 );
 
-
-
-//   useEffect(() => {
-//     if (companyId) {
-//       dispatch(fetchCompanyById(companyId));
-//     }
-//   }, [companyId]);
-
-//   if (loading) return <p className="p-6">Loading company...</p>;
-//   if (error) return <p className="p-6 text-red-500">{error}</p>;
-//   if (!selectedCompany) return null;
-
   return (
     <div className="p-6">
       {/* Back */}
@@ -68,15 +55,18 @@ const Detail = ({ label, value }) => (
         Back
       </button>
 
-     {selectedCompany && (
-  <div className="bg-white border rounded-xl p-6 mb-6">
-    <h2 className="text-lg font-semibold mb-4">Company Details</h2>
+{selectedCompany && (
+  <div className="bg-white border rounded-lg p-4 mb-4">
+    <h2 className="text-sm font-semibold text-gray-800 mb-3">
+      Company Details
+    </h2>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-3 text-xs">
       <Detail label="Company ID" value={selectedCompany.id} />
       <Detail label="Name" value={selectedCompany.name} />
       <Detail label="Country" value={selectedCompany.country} />
-      <Detail label="Base Currency" value={selectedCompany.base_currency} />
+      <Detail label="Currency" value={selectedCompany.base_currency} />
+
       <Detail label="Role" value={selectedCompany.role} />
       <Detail
         label="Status"
@@ -86,26 +76,21 @@ const Detail = ({ label, value }) => (
         label="Membership"
         value={selectedCompany.membership_status ? "Active" : "Inactive"}
       />
+      <Detail label="Users" value={selectedCompany.users_count} />
+
       <Detail
-        label="Users Count"
-        value={selectedCompany.users_count}
-      />
-      <Detail
-        label="Onboarding Completed"
+        label="Onboarding"
         value={selectedCompany.onboarding_completed ? "Yes" : "No"}
       />
       <Detail
-        label="Onboarding Stage"
+        label="Stage"
         value={selectedCompany.onboarding_stage}
       />
       <Detail
-        label="Created At"
-        value={new Date(selectedCompany.created_at).toLocaleString()}
+        label="Created"
+        value={new Date(selectedCompany.created_at).toLocaleDateString()}
       />
-      <Detail
-        label="Tax ID"
-        value={selectedCompany.tax_id}
-      />
+      <Detail label="Tax ID" value={selectedCompany.tax_id} />
     </div>
   </div>
 )}
@@ -130,23 +115,18 @@ const Detail = ({ label, value }) => (
 
         <div className="p-6">
           {activeTab === "users" && (
-            // <CompanyUsersTab companyId={companyId} />
             <CompanyUsersPage/>
           )}
 
           {activeTab === "subscription" && (
-            // <CompanySubscriptionTab companyId={companyId} />
-                           <CustomerSubscriptionPanel companyId={companyId} />
-
-
+            <CustomerSubscriptionPanel companyId={companyId} />
           )}
           {activeTab === "profile" && (
             <CompanyProfileCard companyId={companyId}/>
           )}
 
           {activeTab === "company activity" && (
-            // <CompanyActivityTab companyId={companyId} />
-                        <div>Coming Soon</div>
+             <CompanyActivityStripeTab company={selectedCompany} customer={customer}/>
 
           )}
         

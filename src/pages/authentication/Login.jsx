@@ -11,6 +11,8 @@ export function LoginPage({ onLogin }) {
  const handleLogin = async (e) => {
     e.preventDefault();
 
+    localStorage.clear();
+
     const res = await adminLogin({ email, password });
 
     //  2FA REQUIRED

@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,Navigate } from "react-router-dom";
 
 import Layout from "./layout/Layout";
 
@@ -16,10 +16,13 @@ import SessionManagement from "./components/session/SessionManagement";
 import ManageCompanyPage from "./pages/customer/ManageCompanyPage";
 import PlanManager from "./pages/plans/PlansCrudTable";
 import Products from "./pages/product/Products";
+import CountriesPage from "./pages/countriesConfig/CountriesPage";
+import CountryDetailsPage from "./pages/countriesConfig/CountryDetailsPage";
 
 export default function App() {
   return (
     <Routes>
+      <Route path="/" element={<Navigate to="/admin/login" replace />} />
       <Route path="/admin/login" element={<LoginPage/>} />
       <Route path="/admin/2fa" element={<TwoFactorPage/>} />
       <Route path="settings/2fa" element={<Enable2FA/>} />
@@ -39,8 +42,10 @@ export default function App() {
            <Route path="products" element={<Products></Products>} />
         <Route path="/admin/customer-detail/:customerId" element={<CustomerDetailPage/>} />
         <Route path="/admin/manage-company/:companyId" element={<ManageCompanyPage/>} />
-          <Route path="/admin/sessions" element={<SessionManagement></SessionManagement>}></Route>
-          <Route path="/admin/plans-manager" element={<PlanManager></PlanManager>} />
+          <Route path="/admin/sessions" element={<SessionManagement/>}/>
+          <Route path="/admin/plans-manager" element={<PlanManager/>} />
+          <Route path="/admin/countries" element={<CountriesPage />} />
+          <Route path="/admin/countries/:countryId"element={<CountryDetailsPage />}/>
           </Route>
     </Routes>
   );

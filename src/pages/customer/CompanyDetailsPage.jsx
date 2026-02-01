@@ -19,8 +19,8 @@
   import { clearCompanyActionState } from "../../redux/slices/companyActionSlice";
   import CompanyActionsMenu from "../../components/customer/CompanyActionsMenu";
 import SessionManagement from "../../components/session/SessionManagement";
-import CustomerSubscriptionPanel from "../../components/subscription/CustomerSubscriptionPanel";
 import CompanyDetailsPopup from "../../components/customer/CompanyDetailsPopup";
+import UserActivityBrevoTab from "../../components/customer/UserActivityBrevoTab";
 
 
 const CustomerDetailPage = () => {
@@ -32,7 +32,7 @@ const CustomerDetailPage = () => {
   const [openActionCompanyId, setOpenActionCompanyId] = useState(null);
   const [deleteCompanyId, setDeleteCompanyId] = useState(null);
   const [showDetails,setShowDetails] =useState(null);
-  
+  const [selectedCompany,setSelectedCompany] =useState(null);
   
   const companies = useSelector((state) => state.customers.companies);
     const loading = useSelector((state) => state.customers.companiesLoading);
@@ -44,6 +44,7 @@ const CustomerDetailPage = () => {
     const customer = customers.find(
       (c) => c.id === customerId
     );
+    console.log("customer",customer);
 
     const {
       actionLoading,
@@ -178,7 +179,7 @@ const CustomerDetailPage = () => {
                         >
                           {/* Company */}
                           <td className="px-4 py-3 flex items-center gap-2 font-medium cursor-pointer"   
-                          onClick={() => navigate(`/admin/manage-company/${company.id}`)}
+                          onClick={() => navigate(`/admin/manage-company/${company.id}`,{state:{customer},})}
                           >
                             <Building2 className="w-4 h-4 text-gray-500" />
                             {company.name}
@@ -232,15 +233,6 @@ const CustomerDetailPage = () => {
                         <td className="px-4 py-3 text-right relative">
                           <div className="inline-flex items-center gap-3">
                             <button
-                              onClick={() =>
-                                navigate(`/admin/company/${company.id}/users`)
-                              }
-                              className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                            >
-                              View Users
-                            </button>
-
-                            <button
                               onClick={() => openActions(company.id)}
                               className="text-sm text-gray-600 hover:text-gray-900"
                             >
@@ -250,28 +242,28 @@ const CustomerDetailPage = () => {
 
                           <div className="fixed z-50 w-80 bg-white rounded-lg shadow right-20 top-[60vh]">
 
-                                                    {openActionCompanyId === company.id && (
-  <CompanyActionsMenu
-    company={company}
-    onDeactivate={handleDeactivate}
-    onActivate={handleActivate}
-    onDelete={handleDeleteCompany}
-    actionLoading={actionLoading}
-    lastActionCompanyId={lastActionCompanyId}
-    onClose={closeActions}
-    onViewDetails={(company) => {
-      setSelectedCompany(company);
-      setShowDetails(true);
-    }}
-  />
-)}
+                            {openActionCompanyId === company.id && (
+                              <CompanyActionsMenu
+                                company={company}
+                                onDeactivate={handleDeactivate}
+                                onActivate={handleActivate}
+                                onDelete={handleDeleteCompany}
+                                actionLoading={actionLoading}
+                                lastActionCompanyId={lastActionCompanyId}
+                                onClose={closeActions}
+                                onViewDetails={(company) => {
+                                  setSelectedCompany(company);
+                                  setShowDetails(true);
+                                }}
+                              />
+                            )}
 
-{showDetails && selectedCompany && (
-  <CompanyDetailsPopup
-    company={selectedCompany}
-    onClose={() => setShowDetails(false)}
-  />
-)}
+                            {showDetails && selectedCompany && (
+                              <CompanyDetailsPopup
+                                company={selectedCompany}
+                                onClose={() => setShowDetails(false)}
+                              />
+                            )}
                           </div>
 
 
@@ -290,8 +282,8 @@ const CustomerDetailPage = () => {
 
 
             {/* Activity Tab */}
-            {activeTab === "activity" && (
-              <p className="text-gray-500">Activity API coming soon...</p>
+            {activeTab === "user activity" && (
+              <UserActivityBrevoTab customer={customer}/>
             )}
              {activeTab === "session" && (
               <SessionManagement userId ={customerId}/>
